@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Applications | Repérer les sous-dosage avec l’IA</title>
+  <meta name="description" content="Ce livre a pour ambition de récapituler les travaux effectués durant mon stage de recherche, puis mon mois de travail au laboratoire de Pharmacologie de l’hôpital Cochin." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Applications | Repérer les sous-dosage avec l’IA" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Ce livre a pour ambition de récapituler les travaux effectués durant mon stage de recherche, puis mon mois de travail au laboratoire de Pharmacologie de l’hôpital Cochin." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Applications | Repérer les sous-dosage avec l’IA" />
+  
+  <meta name="twitter:description" content="Ce livre a pour ambition de récapituler les travaux effectués durant mon stage de recherche, puis mon mois de travail au laboratoire de Pharmacologie de l’hôpital Cochin." />
+  
+
+<meta name="author" content="Valentin Constant" />
+
+
+<meta name="date" content="2021-10-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="méthodes.html"/>
+<link rel="next" href="final-words.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prérequis</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="lalgorithme-de-machine-learning.html"><a href="lalgorithme-de-machine-learning.html"><i class="fa fa-check"></i><b>3</b> L’algorithme de Machine Learning</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="lalgorithme-de-machine-learning.html"><a href="lalgorithme-de-machine-learning.html#le-modèle-utilisé-la-forêt-aléatoire-cart"><i class="fa fa-check"></i><b>3.1</b> Le modèle utilisé : la forêt aléatoire (CART)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="lalgorithme-de-machine-learning.html"><a href="lalgorithme-de-machine-learning.html#division-des-données-en-2-données-dentrainements-75-et-données-de-test-25"><i class="fa fa-check"></i><b>3.1.1</b> Division des données en 2 : données d’entrainements (75%) et données de test (25%)</a></li>
+<li class="chapter" data-level="3.1.2" data-path="lalgorithme-de-machine-learning.html"><a href="lalgorithme-de-machine-learning.html#création-du-modèle"><i class="fa fa-check"></i><b>3.1.2</b> Création du modèle</a></li>
+<li class="chapter" data-level="3.1.3" data-path="lalgorithme-de-machine-learning.html"><a href="lalgorithme-de-machine-learning.html#comparaison-des-deux-modèles-metriques-et-matrice-de-confusion"><i class="fa fa-check"></i><b>3.1.3</b> Comparaison des deux modèles : metriques et matrice de confusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="méthodes.html"><a href="méthodes.html"><i class="fa fa-check"></i><b>4</b> Méthodes</a></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#interprétation-globale"><i class="fa fa-check"></i><b>5.1</b> Interprétation globale</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="applications.html"><a href="applications.html#importance-des-variables"><i class="fa fa-check"></i><b>5.1.1</b> Importance des variables</a></li>
+<li class="chapter" data-level="5.1.2" data-path="applications.html"><a href="applications.html#effets-des-variables"><i class="fa fa-check"></i><b>5.1.2</b> Effets des variables</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#interprétation-locale"><i class="fa fa-check"></i><b>5.2</b> Interprétation locale</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="applications.html"><a href="applications.html#pour-4cmi-1"><i class="fa fa-check"></i><b>5.2.1</b> Pour 4CMI</a></li>
+<li class="chapter" data-level="5.2.2" data-path="applications.html"><a href="applications.html#pour-1cmi-1"><i class="fa fa-check"></i><b>5.2.2</b> Pour 1CMI</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Repérer les sous-dosage avec l’IA</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="applications" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Applications</h1>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="applications.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb19-2"><a href="applications.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;iml&quot;</span>)</span>
+<span id="cb19-3"><a href="applications.html#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;lime&quot;</span>)</span>
+<span id="cb19-4"><a href="applications.html#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;MASS&quot;</span>)</span>
+<span id="cb19-5"><a href="applications.html#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;randomForest&quot;</span>)</span></code></pre></div>
+<pre><code>## randomForest 4.6-14</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## 
+## Attachement du package : &#39;randomForest&#39;</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:ggplot2&#39;:
+## 
+##     margin</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="applications.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;caret&quot;</span>)</span>
+<span id="cb24-2"><a href="applications.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;e1071&quot;</span>)</span></code></pre></div>
+<div id="interprétation-globale" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Interprétation globale</h2>
+<div id="importance-des-variables" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Importance des variables</h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="applications.html#cb25-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> df[<span class="fu">which</span>(<span class="fu">names</span>(df) <span class="sc">!=</span> <span class="st">&quot;ECOFF_4CMI&quot;</span>)]</span>
+<span id="cb25-2"><a href="applications.html#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="applications.html#cb25-3" aria-hidden="true" tabindex="-1"></a>predictor <span class="ot">&lt;-</span> Predictor<span class="sc">$</span><span class="fu">new</span>(model_rf, <span class="at">data =</span> X, <span class="at">y =</span> df<span class="sc">$</span>ECOFF_4CMI)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="applications.html#cb26-1" aria-hidden="true" tabindex="-1"></a>X_1 <span class="ot">&lt;-</span> df_1[<span class="fu">which</span>(<span class="fu">names</span>(df_1) <span class="sc">!=</span> <span class="st">&quot;ECOFF_1CMI&quot;</span>)]</span>
+<span id="cb26-2"><a href="applications.html#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="applications.html#cb26-3" aria-hidden="true" tabindex="-1"></a>predictor_1 <span class="ot">&lt;-</span> Predictor<span class="sc">$</span><span class="fu">new</span>(model_rf_1, <span class="at">data =</span> X_1, <span class="at">y =</span> df_1<span class="sc">$</span>ECOFF_1CMI)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="applications.html#cb27-1" aria-hidden="true" tabindex="-1"></a>imp <span class="ot">&lt;-</span> FeatureImp<span class="sc">$</span><span class="fu">new</span>(predictor, <span class="at">loss =</span> <span class="st">&quot;ce&quot;</span>, <span class="at">compare =</span> <span class="st">&quot;difference&quot;</span>, <span class="at">n.repetitions =</span> <span class="dv">15</span>)</span>
+<span id="cb27-2"><a href="applications.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb27-3"><a href="applications.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(imp)</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="applications.html#cb28-1" aria-hidden="true" tabindex="-1"></a>imp<span class="sc">$</span>results</span></code></pre></div>
+<pre><code>##                         feature importance.05  importance importance.95
+## 1                           INT  0.0147492625 0.023598820   0.028318584
+## 2                          cefe  0.0088495575 0.014749263   0.020648968
+## 3                      continue  0.0058997050 0.014749263   0.023598820
+## 4                           BWt  0.0088495575 0.014749263   0.020648968
+## 5                         UreeP  0.0088495575 0.014749263   0.021533923
+## 6                          pipe  0.0058997050 0.011799410   0.018584071
+## 7                          DSTD  0.0058997050 0.011799410   0.014749263
+## 8  MOTTT_Pneumopathie_pleuresie  0.0058997050 0.011799410   0.018584071
+## 9                          CHOC  0.0058997050 0.011799410   0.017699115
+## 10                         PNAm  0.0058997050 0.011799410   0.018584071
+## 11                       taille  0.0079646018 0.011799410   0.015634218
+## 12                           BW  0.0050147493 0.011799410   0.015634218
+## 13                          CRP  0.0058997050 0.011799410   0.012684366
+## 14                       CreatP  0.0050147493 0.011799410   0.020648968
+## 15                     Schwartz  0.0058997050 0.011799410   0.018584071
+## 16                         SEXE  0.0029498525 0.008849558   0.014749263
+## 17       PATHO_cardiovasculaire  0.0041297935 0.008849558   0.011799410
+## 18           MOADM_respiratoire  0.0058997050 0.008849558   0.014749263
+## 19                           PQ  0.0020648968 0.008849558   0.011799410
+## 20                         ASAT  0.0029498525 0.008849558   0.012684366
+## 21                         ALAT  0.0058997050 0.008849558   0.014749263
+## 22                        BiliC  0.0050147493 0.008849558   0.014749263
+## 23 MOTTT_bacteriemie_liee_au_KT  0.0000000000 0.005899705   0.011799410
+## 24           PATHO_respiratoire  0.0020648968 0.005899705   0.008849558
+## 25                     VENT_oxy  0.0029498525 0.005899705   0.011799410
+## 26                       PELOD2 -0.0008849558 0.005899705   0.009734513
+## 27                     DysRespi  0.0029498525 0.005899705   0.009734513
+## 28                          PNN  0.0020648968 0.005899705   0.011799410
+## 29                       cefazo  0.0029498525 0.002949853   0.008849558
+## 30                         cefo  0.0000000000 0.002949853   0.007669617
+## 31                         mero  0.0000000000 0.002949853   0.003834808
+## 32             MOADM_infectieux  0.0000000000 0.002949853   0.008849558
+## 33                       DysRen  0.0029498525 0.002949853   0.008849558
+## 34                       DysHem  0.0000000000 0.002949853   0.007669617
+## 35           PATHO_neurologique  0.0000000000 0.000000000   0.002949853
+## 36                       Fievre  0.0000000000 0.000000000   0.005899705
+## 37                      VENT_VI  0.0000000000 0.000000000   0.002949853
+## 38                       DysHep  0.0000000000 0.000000000   0.004719764
+##    permutation.error
+## 1         0.04424779
+## 2         0.03539823
+## 3         0.03539823
+## 4         0.03539823
+## 5         0.03539823
+## 6         0.03244838
+## 7         0.03244838
+## 8         0.03244838
+## 9         0.03244838
+## 10        0.03244838
+## 11        0.03244838
+## 12        0.03244838
+## 13        0.03244838
+## 14        0.03244838
+## 15        0.03244838
+## 16        0.02949853
+## 17        0.02949853
+## 18        0.02949853
+## 19        0.02949853
+## 20        0.02949853
+## 21        0.02949853
+## 22        0.02949853
+## 23        0.02654867
+## 24        0.02654867
+## 25        0.02654867
+## 26        0.02654867
+## 27        0.02654867
+## 28        0.02654867
+## 29        0.02359882
+## 30        0.02359882
+## 31        0.02359882
+## 32        0.02359882
+## 33        0.02359882
+## 34        0.02359882
+## 35        0.02064897
+## 36        0.02064897
+## 37        0.02064897
+## 38        0.02064897</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="applications.html#cb30-1" aria-hidden="true" tabindex="-1"></a>imp_1 <span class="ot">&lt;-</span> FeatureImp<span class="sc">$</span><span class="fu">new</span>(predictor_1, <span class="at">loss =</span> <span class="st">&quot;ce&quot;</span>, <span class="at">compare =</span> <span class="st">&quot;difference&quot;</span>, <span class="at">n.repetitions =</span> <span class="dv">15</span>)</span>
+<span id="cb30-2"><a href="applications.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;ggplot2&quot;</span>)</span>
+<span id="cb30-3"><a href="applications.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(imp_1)</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="applications.html#cb31-1" aria-hidden="true" tabindex="-1"></a>imp_1<span class="sc">$</span>results</span></code></pre></div>
+<pre><code>##                         feature importance.05  importance importance.95
+## 1                          pipe   0.011799410 0.014749263  0.0176991150
+## 2                           INT   0.009144543 0.014749263  0.0185840708
+## 3                          cefe   0.002949853 0.005899705  0.0126843658
+## 4                          CHOC   0.000000000 0.005899705  0.0097345133
+## 5                        taille   0.000000000 0.005899705  0.0088495575
+## 6                           CRP   0.000000000 0.005899705  0.0088495575
+## 7                         BiliC   0.002949853 0.005899705  0.0067846608
+## 8                         UreeP   0.000000000 0.005899705  0.0067846608
+## 9                        CreatP   0.002949853 0.005899705  0.0088495575
+## 10                       cefazo   0.000000000 0.002949853  0.0067846608
+## 11                         DSTD   0.000000000 0.002949853  0.0058997050
+## 12                     continue   0.000000000 0.002949853  0.0058997050
+## 13 MOTTT_Pneumopathie_pleuresie   0.000000000 0.002949853  0.0058997050
+## 14                         SEXE   0.000000000 0.002949853  0.0029498525
+## 15                         PNAm   0.000000000 0.002949853  0.0067846608
+## 16                           BW   0.002064897 0.002949853  0.0088495575
+## 17                          BWt   0.002064897 0.002949853  0.0058997050
+## 18           PATHO_neurologique   0.002064897 0.002949853  0.0029498525
+## 19           MOADM_respiratoire   0.000000000 0.002949853  0.0029498525
+## 20                       PELOD2   0.000000000 0.002949853  0.0067846608
+## 21                     DysRespi   0.002064897 0.002949853  0.0029498525
+## 22                           PQ   0.002064897 0.002949853  0.0058997050
+## 23                         ALAT   0.002064897 0.002949853  0.0058997050
+## 24                     Schwartz   0.002064897 0.002949853  0.0058997050
+## 25                         cefo   0.000000000 0.000000000  0.0000000000
+## 26                         mero   0.000000000 0.000000000  0.0008849558
+## 27 MOTTT_bacteriemie_liee_au_KT   0.000000000 0.000000000  0.0029498525
+## 28       PATHO_cardiovasculaire   0.000000000 0.000000000  0.0029498525
+## 29           PATHO_respiratoire   0.000000000 0.000000000  0.0000000000
+## 30             MOADM_infectieux   0.000000000 0.000000000  0.0029498525
+## 31                       Fievre   0.000000000 0.000000000  0.0008849558
+## 32                     VENT_oxy   0.000000000 0.000000000  0.0000000000
+## 33                      VENT_VI   0.000000000 0.000000000  0.0000000000
+## 34                       DysRen   0.000000000 0.000000000  0.0000000000
+## 35                       DysHep   0.000000000 0.000000000  0.0000000000
+## 36                       DysHem   0.000000000 0.000000000  0.0008849558
+## 37                          PNN   0.000000000 0.000000000  0.0038348083
+## 38                         ASAT   0.000000000 0.000000000  0.0038348083
+##    permutation.error
+## 1         0.04424779
+## 2         0.04424779
+## 3         0.03539823
+## 4         0.03539823
+## 5         0.03539823
+## 6         0.03539823
+## 7         0.03539823
+## 8         0.03539823
+## 9         0.03539823
+## 10        0.03244838
+## 11        0.03244838
+## 12        0.03244838
+## 13        0.03244838
+## 14        0.03244838
+## 15        0.03244838
+## 16        0.03244838
+## 17        0.03244838
+## 18        0.03244838
+## 19        0.03244838
+## 20        0.03244838
+## 21        0.03244838
+## 22        0.03244838
+## 23        0.03244838
+## 24        0.03244838
+## 25        0.02949853
+## 26        0.02949853
+## 27        0.02949853
+## 28        0.02949853
+## 29        0.02949853
+## 30        0.02949853
+## 31        0.02949853
+## 32        0.02949853
+## 33        0.02949853
+## 34        0.02949853
+## 35        0.02949853
+## 36        0.02949853
+## 37        0.02949853
+## 38        0.02949853</code></pre>
+</div>
+<div id="effets-des-variables" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Effets des variables</h3>
+<div id="pour-4cmi" class="section level4" number="5.1.2.1">
+<h4><span class="header-section-number">5.1.2.1</span> Pour 4CMI</h4>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="applications.html#cb33-1" aria-hidden="true" tabindex="-1"></a>ale <span class="ot">&lt;-</span> FeatureEffect<span class="sc">$</span><span class="fu">new</span>(predictor, <span class="at">feature =</span> <span class="st">&quot;INT&quot;</span>)</span>
+<span id="cb33-2"><a href="applications.html#cb33-2" aria-hidden="true" tabindex="-1"></a>ale<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="applications.html#cb34-1" aria-hidden="true" tabindex="-1"></a>ale</span></code></pre></div>
+<pre><code>## Interpretation method:  FeatureEffect 
+## features: INT[numerical]
+## grid size: 20
+## 
+## Analysed predictor: 
+## Prediction task: classification 
+## Classes:  
+## 
+## Analysed data:
+## Sampling from data.frame with 339 rows and 38 columns.
+## 
+## Head of results:
+##   .type .class      .value INT
+## 1   ale      1  0.02020059   6
+## 2   ale      0 -0.02020059   6
+## 3   ale      1 -0.01179941   8
+## 4   ale      0  0.01179941   8
+## 5   ale      1 -0.01179941  12
+## 6   ale      0  0.01179941  12</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="applications.html#cb36-1" aria-hidden="true" tabindex="-1"></a>ale <span class="ot">&lt;-</span> FeatureEffect<span class="sc">$</span><span class="fu">new</span>(predictor, <span class="at">feature =</span> <span class="st">&quot;INT&quot;</span>)</span>
+<span id="cb36-2"><a href="applications.html#cb36-2" aria-hidden="true" tabindex="-1"></a>ale<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="applications.html#cb37-1" aria-hidden="true" tabindex="-1"></a>ale</span></code></pre></div>
+<pre><code>## Interpretation method:  FeatureEffect 
+## features: INT[numerical]
+## grid size: 20
+## 
+## Analysed predictor: 
+## Prediction task: classification 
+## Classes:  
+## 
+## Analysed data:
+## Sampling from data.frame with 339 rows and 38 columns.
+## 
+## Head of results:
+##   .type .class      .value INT
+## 1   ale      1  0.01767552   6
+## 2   ale      0 -0.01767552   6
+## 3   ale      1 -0.01032448   8
+## 4   ale      0  0.01032448   8
+## 5   ale      1 -0.01032448  12
+## 6   ale      0  0.01032448  12</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="applications.html#cb39-1" aria-hidden="true" tabindex="-1"></a>ale <span class="ot">&lt;-</span> FeatureEffect<span class="sc">$</span><span class="fu">new</span>(predictor, <span class="at">feature =</span> <span class="st">&quot;DSTD&quot;</span>)</span>
+<span id="cb39-2"><a href="applications.html#cb39-2" aria-hidden="true" tabindex="-1"></a>ale<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="applications.html#cb40-1" aria-hidden="true" tabindex="-1"></a>ale</span></code></pre></div>
+<pre><code>## Interpretation method:  FeatureEffect 
+## features: DSTD[numerical]
+## grid size: 20
+## 
+## Analysed predictor: 
+## Prediction task: classification 
+## Classes:  
+## 
+## Analysed data:
+## Sampling from data.frame with 339 rows and 38 columns.
+## 
+## Head of results:
+##   .type .class     .value DSTD
+## 1   ale      1 -0.1526453 0.06
+## 2   ale      0  0.1526453 0.06
+## 3   ale      1 -0.1526453 0.38
+## 4   ale      0  0.1526453 0.38
+## 5   ale      1 -0.1526453 0.50
+## 6   ale      0  0.1526453 0.50</code></pre>
+</div>
+<div id="pour-1cmi" class="section level4" number="5.1.2.2">
+<h4><span class="header-section-number">5.1.2.2</span> Pour 1CMI</h4>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="applications.html#cb42-1" aria-hidden="true" tabindex="-1"></a>ale <span class="ot">&lt;-</span> FeatureEffect<span class="sc">$</span><span class="fu">new</span>(predictor_1, <span class="at">feature =</span> <span class="st">&quot;INT&quot;</span>)</span>
+<span id="cb42-2"><a href="applications.html#cb42-2" aria-hidden="true" tabindex="-1"></a>ale<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="applications.html#cb43-1" aria-hidden="true" tabindex="-1"></a>ale</span></code></pre></div>
+<pre><code>## Interpretation method:  FeatureEffect 
+## features: INT[numerical]
+## grid size: 20
+## 
+## Analysed predictor: 
+## Prediction task: classification 
+## Classes:  
+## 
+## Analysed data:
+## Sampling from data.frame with 339 rows and 38 columns.
+## 
+## Head of results:
+##   .type .class       .value INT
+## 1   ale      1  0.015150442   6
+## 2   ale      0 -0.015150442   6
+## 3   ale      1 -0.008849558   8
+## 4   ale      0  0.008849558   8
+## 5   ale      1 -0.008849558  12
+## 6   ale      0  0.008849558  12</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="applications.html#cb45-1" aria-hidden="true" tabindex="-1"></a>ale <span class="ot">&lt;-</span> FeatureEffect<span class="sc">$</span><span class="fu">new</span>(predictor_1, <span class="at">feature =</span> <span class="st">&quot;CreatP&quot;</span>, <span class="at">grid.size =</span> <span class="dv">2</span>)</span>
+<span id="cb45-2"><a href="applications.html#cb45-2" aria-hidden="true" tabindex="-1"></a>ale<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="applications.html#cb46-1" aria-hidden="true" tabindex="-1"></a>ale <span class="ot">&lt;-</span> FeatureEffect<span class="sc">$</span><span class="fu">new</span>(predictor_1, <span class="at">feature =</span> <span class="st">&quot;PELOD2&quot;</span>, <span class="at">grid.size =</span> <span class="dv">2</span>)</span>
+<span id="cb46-2"><a href="applications.html#cb46-2" aria-hidden="true" tabindex="-1"></a>ale<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="applications.html#cb47-1" aria-hidden="true" tabindex="-1"></a>ale</span></code></pre></div>
+<pre><code>## Interpretation method:  FeatureEffect 
+## features: PELOD2[numerical]
+## grid size: 2
+## 
+## Analysed predictor: 
+## Prediction task: classification 
+## Classes:  
+## 
+## Analysed data:
+## Sampling from data.frame with 339 rows and 38 columns.
+## 
+## Head of results:
+##   .type .class       .value PELOD2
+## 1   ale      1  0.003872667      0
+## 2   ale      0 -0.003872667      0
+## 3   ale      1 -0.001474926      3
+## 4   ale      0  0.001474926      3
+## 5   ale      1 -0.001474926     16
+## 6   ale      0  0.001474926     16</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="applications.html#cb49-1" aria-hidden="true" tabindex="-1"></a>ale <span class="ot">&lt;-</span> FeatureEffect<span class="sc">$</span><span class="fu">new</span>(predictor, <span class="at">feature =</span> <span class="st">&quot;Schwartz&quot;</span>, <span class="at">grid.size =</span> <span class="dv">2</span>)</span>
+<span id="cb49-2"><a href="applications.html#cb49-2" aria-hidden="true" tabindex="-1"></a>ale<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="interprétation-locale" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Interprétation locale</h2>
+<div id="pour-4cmi-1" class="section level3" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Pour 4CMI</h3>
+<div id="avec-lime" class="section level4" number="5.2.1.1">
+<h4><span class="header-section-number">5.2.1.1</span> Avec LIME</h4>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="applications.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lime)</span>
+<span id="cb50-2"><a href="applications.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span></code></pre></div>
+<pre><code>## 
+## Attachement du package : &#39;patchwork&#39;</code></pre>
+<pre><code>## L&#39;objet suivant est masqué depuis &#39;package:MASS&#39;:
+## 
+##     area</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="applications.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#LIME</span></span>
+<span id="cb53-2"><a href="applications.html#cb53-2" aria-hidden="true" tabindex="-1"></a>explainer <span class="ot">&lt;-</span> <span class="fu">lime</span>(df, model_rf)<span class="co">#lime</span></span>
+<span id="cb53-3"><a href="applications.html#cb53-3" aria-hidden="true" tabindex="-1"></a>explanation <span class="ot">&lt;-</span> lime<span class="sc">::</span><span class="fu">explain</span>(X[<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, ], explainer, <span class="at">n_labels =</span> <span class="dv">1</span>, <span class="at">n_features =</span> <span class="dv">20</span>)</span>
+<span id="cb53-4"><a href="applications.html#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_explanations</span>(explanation)</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="applications.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_features</span>(explanation)</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-25-2.png" width="672" /></p>
+</div>
+<div id="avec-shap" class="section level4" number="5.2.1.2">
+<h4><span class="header-section-number">5.2.1.2</span> Avec SHAP</h4>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="applications.html#cb55-1" aria-hidden="true" tabindex="-1"></a>shapley <span class="ot">&lt;-</span> Shapley<span class="sc">$</span><span class="fu">new</span>(predictor, <span class="at">x.interest =</span> X[<span class="dv">1</span>, ])</span>
+<span id="cb55-2"><a href="applications.html#cb55-2" aria-hidden="true" tabindex="-1"></a>shapley<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="applications.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shapley<span class="sc">$</span>results, <span class="at">n=</span><span class="dv">15</span>)</span></code></pre></div>
+<pre><code>##                         feature class   phi    phi.var
+## 1                        cefazo     1 -0.01 0.01000000
+## 2                          cefe     1  0.04 0.03878788
+## 3                          cefo     1  0.01 0.01000000
+## 4                          mero     1  0.00 0.00000000
+## 5                          pipe     1 -0.06 0.05696970
+## 6                          DSTD     1  0.00 0.02020202
+## 7                      continue     1  0.02 0.01979798
+## 8                           INT     1 -0.04 0.05898990
+## 9  MOTTT_Pneumopathie_pleuresie     1  0.05 0.04797980
+## 10 MOTTT_bacteriemie_liee_au_KT     1  0.00 0.00000000
+## 11                         CHOC     1  0.05 0.04797980
+## 12                         SEXE     1  0.00 0.00000000
+## 13                         PNAm     1 -0.06 0.11757576
+## 14                       taille     1  0.01 0.09080808
+## 15                           BW     1  0.02 0.06020202
+##                     feature.value
+## 1                        cefazo=0
+## 2                          cefe=0
+## 3                          cefo=0
+## 4                          mero=0
+## 5                          pipe=0
+## 6                       DSTD=1.04
+## 7                      continue=0
+## 8                           INT=8
+## 9  MOTTT_Pneumopathie_pleuresie=0
+## 10 MOTTT_bacteriemie_liee_au_KT=0
+## 11                         CHOC=0
+## 12                         SEXE=0
+## 13                       PNAm=1.2
+## 14                      taille=50
+## 15                       BW=2.885</code></pre>
+</div>
+<div id="prédiction-de-la-forêt" class="section level4" number="5.2.1.3">
+<h4><span class="header-section-number">5.2.1.3</span> Prédiction de la forêt</h4>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="applications.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model_rf, df[<span class="dv">1</span>, ])</span></code></pre></div>
+<pre><code>## [1] 1
+## Levels: 1 0</code></pre>
+</div>
+<div id="valeur-réelle-de-ecoff_4cmi" class="section level4" number="5.2.1.4">
+<h4><span class="header-section-number">5.2.1.4</span> Valeur réelle de ECOFF_4CMI</h4>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="applications.html#cb60-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">1</span>,<span class="dv">39</span>]</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   ECOFF_4CMI
+##   &lt;fct&gt;     
+## 1 1</code></pre>
+</div>
+</div>
+<div id="pour-1cmi-1" class="section level3" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Pour 1CMI</h3>
+<div id="avec-lime-1" class="section level4" number="5.2.2.1">
+<h4><span class="header-section-number">5.2.2.1</span> Avec LIME</h4>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="applications.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#LIME</span></span>
+<span id="cb62-2"><a href="applications.html#cb62-2" aria-hidden="true" tabindex="-1"></a>explainer_1 <span class="ot">&lt;-</span> <span class="fu">lime</span>(df_1, model_rf_1)<span class="co">#lime</span></span>
+<span id="cb62-3"><a href="applications.html#cb62-3" aria-hidden="true" tabindex="-1"></a>explanation_1 <span class="ot">&lt;-</span> lime<span class="sc">::</span><span class="fu">explain</span>(X_1[<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, ], explainer_1, <span class="at">n_labels =</span> <span class="dv">1</span>, <span class="at">n_features =</span> <span class="dv">20</span>)</span>
+<span id="cb62-4"><a href="applications.html#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_explanations</span>(explanation_1)</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="applications.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_features</span>(explanation_1)</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+</div>
+<div id="avec-shap-1" class="section level4" number="5.2.2.2">
+<h4><span class="header-section-number">5.2.2.2</span> Avec SHAP</h4>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="applications.html#cb64-1" aria-hidden="true" tabindex="-1"></a>shapley_1 <span class="ot">&lt;-</span> Shapley<span class="sc">$</span><span class="fu">new</span>(predictor_1, <span class="at">x.interest =</span> X_1[<span class="dv">1</span>, ])</span>
+<span id="cb64-2"><a href="applications.html#cb64-2" aria-hidden="true" tabindex="-1"></a>shapley_1<span class="sc">$</span><span class="fu">plot</span>()</span></code></pre></div>
+<p><img src="bookdown-projet-underdose_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="applications.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shapley_1<span class="sc">$</span>results, <span class="at">n=</span><span class="dv">15</span>)</span></code></pre></div>
+<pre><code>##                         feature class   phi    phi.var
+## 1                        cefazo     1  0.03 0.02939394
+## 2                          cefe     1  0.06 0.05696970
+## 3                          cefo     1  0.00 0.00000000
+## 4                          mero     1  0.00 0.00000000
+## 5                          pipe     1 -0.05 0.04797980
+## 6                          DSTD     1  0.07 0.06575758
+## 7                      continue     1  0.02 0.01979798
+## 8                           INT     1 -0.02 0.04000000
+## 9  MOTTT_Pneumopathie_pleuresie     1  0.04 0.03878788
+## 10 MOTTT_bacteriemie_liee_au_KT     1  0.00 0.00000000
+## 11                         CHOC     1  0.01 0.01000000
+## 12                         SEXE     1  0.02 0.01979798
+## 13                         PNAm     1  0.01 0.03020202
+## 14                       taille     1  0.01 0.03020202
+## 15                           BW     1  0.07 0.08595960
+##                     feature.value
+## 1                        cefazo=0
+## 2                          cefe=0
+## 3                          cefo=0
+## 4                          mero=0
+## 5                          pipe=0
+## 6                       DSTD=1.04
+## 7                      continue=0
+## 8                           INT=8
+## 9  MOTTT_Pneumopathie_pleuresie=0
+## 10 MOTTT_bacteriemie_liee_au_KT=0
+## 11                         CHOC=0
+## 12                         SEXE=0
+## 13                       PNAm=1.2
+## 14                      taille=50
+## 15                       BW=2.885</code></pre>
+</div>
+<div id="prédiction-de-la-forêt-1" class="section level4" number="5.2.2.3">
+<h4><span class="header-section-number">5.2.2.3</span> Prédiction de la forêt</h4>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="applications.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model_rf_1, df_1[<span class="dv">1</span>, ])</span></code></pre></div>
+<pre><code>## [1] 1
+## Levels: 1 0</code></pre>
+</div>
+<div id="valeur-réelle-de-ecoff_4cmi-1" class="section level4" number="5.2.2.4">
+<h4><span class="header-section-number">5.2.2.4</span> Valeur réelle de ECOFF_4CMI</h4>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="applications.html#cb69-1" aria-hidden="true" tabindex="-1"></a>df_1[<span class="dv">1</span>,<span class="dv">39</span>]</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   ECOFF_1CMI
+##   &lt;fct&gt;     
+## 1 1</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="méthodes.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="final-words.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-projet-underdose.pdf", "bookdown-projet-underdose.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
